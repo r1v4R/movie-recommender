@@ -7,7 +7,7 @@ const POSTER_GRADIENTS = [
     "from-red-900 via-red-800 to-zinc-900",
     "from-blue-900 via-indigo-900 to-zinc-900",
     "from-emerald-900 via-teal-900 to-zinc-900",
-    "from-violet-900 via-purple-900 to-zinc-900", Get - Content "movie-recommender-ui\src\App.js" | Select - Object - First 6
+    "from-violet-900 via-purple-900 to-zinc-900",
     "from-amber-900 via-orange-900 to-zinc-900",
 ];
 
