@@ -21,7 +21,7 @@ from flask_cors import CORS
 
 # TMDB API integration
 
-TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "fcf0eec5da3b18b1828fad191d0eebdc")
+TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 TMDB_SEARCH_URL = "https://api.themoviedb.org/3/search/movie"
 TMDB_IMG_BASE = "https://image.tmdb.org/t/p/w500"
 
