@@ -7,7 +7,7 @@ const POSTER_GRADIENTS = [
     "from-red-900 via-red-800 to-zinc-900",
     "from-blue-900 via-indigo-900 to-zinc-900",
     "from-emerald-900 via-teal-900 to-zinc-900",
-    "from-violet-900 via-purple-900 to-zinc-900",
+    "from-violet-900 via-purple-900 to-zinc-900", Get - Content "movie-recommender-ui\src\App.js" | Select - Object - First 6
     "from-amber-900 via-orange-900 to-zinc-900",
 ];
 
@@ -61,23 +61,37 @@ function MovieCard({ rec, index, gradient, accent }) {
                 animation: "cardSlideIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both",
             }}
             className={`
-        relative rounded-xl overflow-hidden cursor-pointer
-        border border-white/5
-        transition-all duration-300
-        ${hovered ? `ring-1 ${accent.ring} shadow-2xl ${accent.glow} scale-[1.02] -translate-y-1` : "shadow-lg"}
-      `}
+                relative rounded-xl overflow-hidden cursor-pointer
+                border border-white/5
+                transition-all duration-300
+                ${hovered ? `ring-1 ${accent.ring} shadow-2xl ${accent.glow} scale-[1.02] -translate-y-1` : "shadow-lg"}
+            `}
         >
             {/* Poster area */}
-            <div className={`h-36 bg-gradient-to-br ${gradient} flex items-center justify-center relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-black/20" />
-                {/* Decorative circles */}
-                <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/5" />
-                <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-white/5" />
-                <span className="relative z-10 text-3xl font-black text-white/80 tracking-widest" style={{ fontFamily: "'Bebas Neue', 'Impact', sans-serif", letterSpacing: "0.15em" }}>
-                    {initials}
-                </span>
+            <div className="h-64 relative overflow-hidden bg-zinc-900">
+                {rec.poster ? (
+                    <img
+                        src={rec.poster}
+                        alt={rec.title}
+                        className="w-full h-full object-cover"
+                        style={{ transition: "transform 0.4s ease", transform: hovered ? "scale(1.05)" : "scale(1)" }}
+                    />
+                ) : (
+                    <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-center relative`}>
+                        <div className="absolute inset-0 bg-black/20" />
+                        <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/5" />
+                        <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-white/5" />
+                        <span className="relative z-10 text-3xl font-black text-white/80 tracking-widest"
+                            style={{ fontFamily: "'Bebas Neue', 'Impact', sans-serif", letterSpacing: "0.15em" }}>
+                            {initials}
+                        </span>
+                    </div>
+                )}
+                {/* Dark overlay on hover */}
+                <div className="absolute inset-0 bg-black/0 transition-all duration-300"
+                    style={{ background: hovered ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0)" }} />
                 {/* Rank badge */}
-                <div className={`absolute top-3 left-3 w-7 h-7 rounded-full ${accent.badge} flex items-center justify-center`}>
+                <div className={`absolute top-3 left-3 w-7 h-7 rounded-full ${accent.badge} flex items-center justify-center z-10`}>
                     <span className="text-white text-xs font-black">#{index + 1}</span>
                 </div>
             </div>
@@ -86,10 +100,10 @@ function MovieCard({ rec, index, gradient, accent }) {
             <div className="bg-zinc-900 p-4">
                 <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-white font-bold text-sm leading-snug line-clamp-2 mb-2" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.05em", fontSize: "1rem" }}>
+                        <h3 className="text-white font-bold text-sm leading-snug line-clamp-2 mb-2"
+                            style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.05em", fontSize: "1rem" }}>
                             {rec.title}
                         </h3>
-                        {/* Match bar */}
                         <div className="flex items-center gap-2">
                             <div className="flex-1 h-1 bg-zinc-700 rounded-full overflow-hidden">
                                 <div
