@@ -11,13 +11,19 @@ Prerequisites:
 Run:
   python app.py
 """
-
+import requests
 import os
 import pickle
 import numpy as np
 import pandas as pd
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+
+# TMDB API integration
+
+TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "fcf0eec5da3b18b1828fad191d0eebdc")
+TMDB_SEARCH_URL = "https://api.themoviedb.org/3/search/movie"
+TMDB_IMG_BASE = "https://image.tmdb.org/t/p/w500"
 
 # ──────────────────────────────────────────────
 # APP FACTORY
@@ -72,34 +78,41 @@ print(f"[INFO] Dataset: {len(movies_df)} movies  |  "
 # HELPER
 # ──────────────────────────────────────────────
 
-def get_recommendations(title: str, top_n: int = 5) -> list[dict]:
-    """
-    Find the top-N most similar movies for *title*.
+def fetch_poster(title: str) -> str | None:
+    try:
+        res = requests.get(TMDB_SEARCH_URL, params={
+            "api_key": TMDB_API_KEY,
+            "query": title,
+            "page": 1,
+        }, timeout=5)
+        data = res.json()
+        results = data.get("results", [])
+        if results and results[0].get("poster_path"):
+            return TMDB_IMG_BASE + results[0]["poster_path"]
+    except Exception:
+        pass
+    return None
 
-    Returns a list of dicts:
-        [{"title": "...", "similarity_pct": 87.34}, ...]
-    """
-    # Case-insensitive lookup
-    mask    = movies_df["title"].str.lower() == title.strip().lower()
+
+def get_recommendations(title: str, top_n: int = 5) -> list[dict]:
+    mask = movies_df["title"].str.lower() == title.strip().lower()
     indices = movies_df.index[mask].tolist()
 
     if not indices:
-        return None   # caller will raise 404
+        return None
 
     movie_idx = indices[0]
-
-    # Retrieve similarity scores for this movie
     sim_scores = list(enumerate(similarity[movie_idx]))
-
-    # Sort descending; skip index 0 (the movie itself)
     sim_scores_sorted = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    top_matches       = [item for item in sim_scores_sorted if item[0] != movie_idx][:top_n]
+    top_matches = [item for item in sim_scores_sorted if item[0] != movie_idx][:top_n]
 
     recommendations = []
     for idx, score in top_matches:
+        rec_title = movies_df.iloc[idx]["title"]
         recommendations.append({
-            "title":          movies_df.iloc[idx]["title"],
+            "title": rec_title,
             "similarity_pct": round(float(score) * 100, 2),
+            "poster": fetch_poster(rec_title),
         })
 
     return recommendations
