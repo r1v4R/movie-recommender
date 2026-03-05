@@ -1,13 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
-```
 
----
-
-### 2. Create `.env.production` in `movie - recommender - ui / `
-```
-REACT_APP_API_URL = https://movie-recommender-a9pz.onrender.com
 
 const POSTER_GRADIENTS = [
     "from-red-900 via-red-800 to-zinc-900",
