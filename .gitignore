@@ -1,1 +1,3 @@
 backend/*.pkl
+node_modules/
+movie-recommender-ui/node_modules/
