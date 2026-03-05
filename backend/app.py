@@ -86,11 +86,12 @@ def fetch_poster(title: str) -> str | None:
             "page": 1,
         }, timeout=5)
         data = res.json()
+        print(f"[TMDB] {title} → status={res.status_code} results={len(data.get('results', []))}")
         results = data.get("results", [])
         if results and results[0].get("poster_path"):
             return TMDB_IMG_BASE + results[0]["poster_path"]
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"[TMDB ERROR] {title} → {e}")
     return None
 
 
