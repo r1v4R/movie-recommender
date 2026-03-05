@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* This ensures the font used in App.js is loaded */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+/* Force a dark background if Tailwind fails to catch the zinc-950 class initially */
+body {
+    background-color: #09090b;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
